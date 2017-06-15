@@ -11,7 +11,7 @@ if ($view->getModule()->getIdentifier() == 'update') {
     $keyStyles = 0;
 }
 
-echo $view->header('nas')->setAttribute('template', $headerText);
+echo $view->header('key')->setAttribute('template', $headerText);
 
 echo $view->textInput('key', $keyStyles);
 echo $view->textInput('ipaddr');

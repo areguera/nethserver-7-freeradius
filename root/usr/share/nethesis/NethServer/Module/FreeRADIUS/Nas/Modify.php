@@ -36,9 +36,9 @@ class Modify extends \Nethgui\Controller\Table\Modify
     public function initialize()
     {
         $parameterSchema = array(
-            array('nas', Validate::ANYTHING, Table::KEY),
+            array('key', Validate::NOTEMPTY, Table::KEY),
             array('ipaddr', Validate::IP, Table::FIELD),
-            array('secret', Validate::ANYTHING, Table::FIELD),
+            array('secret', Validate::NOTEMPTY, Table::FIELD),
             array('Description', Validate::ANYTHING, Table::FIELD),
         );
 
@@ -79,7 +79,7 @@ class Modify extends \Nethgui\Controller\Table\Modify
             // signalEvent() is invoked there.
             return;
         }
-        $this->getPlatform()->signalEvent('nethserver-freeradius-update@post-process', array($this->parameters['nas']));
+        $this->getPlatform()->signalEvent('nethserver-freeradius-update@post-process', array($this->parameters['key']));
 
     }
 
