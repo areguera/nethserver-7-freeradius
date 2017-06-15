@@ -9,21 +9,28 @@
     our %macmap;
 
     foreach $host ($hdb->get_all_by_prop('type', 'local')) {
+
         my $IpAddress = $host->prop('IpAddress') || '';
         my $MacAddress = $host->prop('MacAddress') || '';
 
-	if ($IpAddress eq '' || $MacAddress eq '') {
-	   # skip all entries without an IP
-	   next;
-	}
+        if ($IpAddress eq '' || $MacAddress eq '') {
+	        # skip all entries without IP or MAC
+	        next;
+        else
+            # convert all MAC entries to FreeRADIUS default MAC
+            # format. This helps us to reduce the number of
+            # configuration files to change.
+            $MacAddress =~ s/:/-/g;
+	    }
 
         if (! exists($macmap{$MacAddress})) {
             $macmap{$MacAddress} = [];
         }
 
-	my $Description = $host->prop('Description') || "";
+        my $Description = $host->prop('Description') || "";
 
         push(@{$macmap{$MacAddress}}, {'MacAddress' => lc($MacAddress), 'Description' => $Description, 'Host' => $host->key});
+
     }
 
     foreach my $mac (keys %macmap) {
