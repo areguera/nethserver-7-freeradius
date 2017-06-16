@@ -36,10 +36,13 @@ event_actions("interface-update", qw(
 #
 event_templates("nethserver-freeradius-update", qw(
     /etc/raddb/authorized_macs
+    /etc/raddb/mods-available/files
+    /etc/raddb/sites-available/default
 ));
 
 #
 # Services
 #
 event_services("nethserver-freeradius-update", qw(
+    radiusd restart
 ));
