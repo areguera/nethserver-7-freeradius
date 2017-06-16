@@ -1,6 +1,3 @@
-#
-# 10base
-#
 
 {
     use esmith::HostsDB;
@@ -16,7 +13,7 @@
         if ($IpAddress eq '' || $MacAddress eq '') {
 	        # skip all entries without IP or MAC
 	        next;
-        else
+        } else {
             # convert all MAC entries to FreeRADIUS default MAC
             # format. This helps us to reduce the number of
             # configuration files to change.
@@ -38,7 +35,7 @@
             $OUT .= "# Host: ".$el->{'Host'}."\n" if($el->{'Host'});
             $OUT .= "# ".$el->{'Description'}."\n" if($el->{'Description'});
             $OUT .= sprintf "%-17s\n", $el->{'MacAddress'};
-	    $OUT .= sprintf "\t%s\n\n", 'Reply-Message = "Device with MAC Address %\{Calling-Station-Id\} authorized for network access"';
+            $OUT .= sprintf "\t%s\n\n", 'Reply-Message = "Device with MAC Address %\{Calling-Station-Id\} authorized for network access"';
         }
     }
 
