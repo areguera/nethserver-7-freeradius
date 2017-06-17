@@ -16,9 +16,8 @@ Requires: freeradius >= 3.0.4
 This package provides FreeRADIUS integration to NethServer.  The
 integration turns NethServer into a MAC-based centralized
 authentication server. In normal operation, the system administrator
-set IP reservations using NethServer DHCP to define what MAC addresses
-will have access to both NethServer hosted services and the network.
-
+uses NethServer DHCP module to reserve IP addresses and so, define
+what MACs will be authorized to access the network.
 
 %prep
 %setup
@@ -40,5 +39,5 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Mon 12 Jun 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.1-1
+* Fri 16 Jun 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.1-1
 - Initial commit 
