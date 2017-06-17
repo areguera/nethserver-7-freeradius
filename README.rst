@@ -4,50 +4,75 @@ nethserver-freeradius
 
 This package provides FreeRADIUS integration to NethServer.  The
 integration turns NethServer into a MAC-based centralized
-authentication server. In normal operation, the system administrator
-set IP reservations using NethServer DHCP to define what MAC addresses
-will have access to both NethServer hosted services and the network.
+authentication server, used to control users' network access through
+Network Access Server (NAS) devices already configured to do so. No
+other authentication is implemented by now.
 
-This package takes the MACs of reserved IPs in NethServer, builds the
-list of MAC addresses authorized to access the network and finally
-reloads the FreeRADIUS daemon for changes to take effect.
-
-This package might be useful for wireless communities that need to
-control the network access of its users as well as provide mobility to
-them.
+This package might be useful for system administrators from wireless
+communities needing to control the network access of its users as well
+as provide mobility to them.
 
 Installation
 ============
 
-When installed, the package does the following:
+When installed, this package does the following:
 
-* Install `freeradius` package from CentOS base repository
+* Install package dependencies (e.g., `freeradius`).
 
-* Install customized configuration files so to turn NethServer
-  into a MAC-based authentication server.
+* Customize FreeRADIUS default configuration files (e.g.,
+  `/etc/raddb/sites-available/default` and
+  `/etc/raddb/mods-available/files`) so to turn it into a MAC-based
+  authentication server, as described in
+  https://wiki.freeradius.org/guide/Mac-Auth.
 
-* Add FreeRADIUS entry in NethServer Configuration panel to define
-  basic configuration stuff (e.g., NAS)
+* Create FreeRADIUS link to NethServer configuration panel to manage
+  NAS information (e.g., name, address, secret and desciption). Only
+  NAS configured here will be able to send authorization request to
+  the authentication sever.
+
+* Create `radiusd` at configuration's default databases.
 
 Configuration
 =============
 
-The system administrator must use NethServer configuration tools
-(e.g., the `config` command) to set the address and secret of each
-Network Access Server (NAS) that will be used in the network. Then
-configure the NAS to interact with the FreeRADIUS server. The rest of
-this section describes the options used to control FreeRADIUS
-configuration and the commands you can run to customize them.
+In normal operation, the system administrator does the following:
 
-* *radiusd* -- Configuration database under which FreeRADIUS
-  configuration is stored in. Use the command `config radiusd keys` to
-  print a list of all configuration keys supported.
+1. Use NethServer FreeRADIUS module to configure what NAS will be able
+   to interact with the authentication server. The results is
+   reflected in `/etc/raddb/clients.conf` file.
 
-** *NAS*
+1. Configure each NAS so as to send authorization request to the
+   centralized authentication server (e.g., the system administrator
+   must specify the central authentication server IP, port and related
+   secret in each device intended to work as NAS).
+
+1. Use NethServer DHCP module to reserve IP addresses and so, define
+   what MAC will be authorized to access the network (i.e., only the
+   MAC address that has been reserved in NethServer DHCP module
+   will have authorized network access by the authentication server).
+
+This integration is been tested with friends in a local wireless
+community made of Nano Station devices. In this infrastructure, a line
+of them is configured as access points and the rest of them as client
+stations. The access points were also configured to validate MACs
+against a RADIUS authentication server running NethServer with this
+module.
+
+Security
+========
+
+MAC-based authorization doesn't provide too much security by its own
+(e.g., an unauthorized user can clone the MAC address of authorized
+users and get network access as such). However, by doing so, the
+module provides a start-base code (and, hopefully, needed motivation)
+for NethServer community to look forward sophisticated FreeRADIUS
+integration features like EAP authentication and accounting.
 
 Bugs
 ====
 
+Please report bugs to 
+https://github.com/areguera/nethserver-freeradius
 
 Author
 ======
@@ -57,5 +82,4 @@ Author
 References
 ==========
 
-* https://wiki.freeradius.org/guide/Mac-Auth
-* http://freeradius.org/doc/
+* http://freeradius.org/
