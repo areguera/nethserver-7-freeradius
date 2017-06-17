@@ -2,7 +2,7 @@
 namespace NethServer\Module\FreeRADIUS;
 
 /*
- * Copyright (C) 2012 Nethesis S.r.l.
+ * Copyright (C) 2017 Nethesis S.r.l.
  *
  * This script is part of NethServer.
  *
@@ -21,10 +21,9 @@ namespace NethServer\Module\FreeRADIUS;
  */
 
 /**
- * Nas management for FreeRADIUS server module
+ * Nas management for FreeRADIUS module
  *
- * @author Davide Principi <davide.principi@nethesis.it>
- * @since 1.0
+ * @author Alain Reguera Delgado <alain.reguera@gmail.com>
  */
 class Nas extends \Nethgui\Controller\TableController
 {
@@ -44,7 +43,7 @@ class Nas extends \Nethgui\Controller\TableController
             ->addRowAction(new \NethServer\Module\FreeRADIUS\Nas\Modify('delete'))
             ->addTableAction(new \NethServer\Module\FreeRADIUS\Nas\Modify('create'))
             ->addTableAction(new \Nethgui\Controller\Table\Help('Help'))
-	;
+	    ;
 
         parent::initialize();
     }

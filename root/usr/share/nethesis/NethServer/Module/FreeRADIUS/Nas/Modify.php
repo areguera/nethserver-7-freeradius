@@ -2,7 +2,7 @@
 namespace NethServer\Module\FreeRADIUS\Nas;
 
 /*
- * Copyright (C) 2012 Nethesis S.r.l.
+ * Copyright (C) 2017 Nethesis S.r.l.
  *
  * This script is part of NethServer.
  *
@@ -28,8 +28,7 @@ use Nethgui\Controller\Table\Modify as Table;
  *
  * Generic class to create/update/delete Nas records
  * 
- * @author Davide Principi <davide.principi@nethesis.it>
- * @since 1.0
+ * @author Alain Reguera Delgado <alain.reguera@gmail.com>
  */
 class Modify extends \Nethgui\Controller\Table\Modify
 {

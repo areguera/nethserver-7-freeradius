@@ -2,7 +2,7 @@
 namespace NethServer\Module;
 
 /*
- * Copyright (C) 2011 Nethesis S.r.l.
+ * Copyright (C) 2017 Nethesis S.r.l.
  * 
  * This script is part of NethServer.
  * 
@@ -22,6 +22,8 @@ namespace NethServer\Module;
 
 /**
  * Implementation of FreeRADIUS module.
+ *
+ * @author Alain Reguera Delgado <alain.reguera@gmail.com>
  */
 class FreeRADIUS extends \Nethgui\Controller\TabsController
 {
