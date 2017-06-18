@@ -57,12 +57,12 @@ In normal operation, the system administrator does the following:
    to interact with the authorization server. See
    `/etc/raddb/clients.conf` file.
 
-1. Configure each NAS so as to send authorization request to the
+2. Configure each NAS so as to send authorization request to the
    centralized authorization server (e.g., the system administrator
    must specify the authorization server IP, port number and related
    secret in each device intended to work as NAS).
 
-1. Use NethServer DHCP module to reserve IP addresses and so, define
+3. Use NethServer DHCP module to reserve IP addresses and so, define
    what MAC will be authorized to access the network as well (i.e.,
    only the MAC address that has been reserved in NethServer DHCP
    module will have authorized network access by the authorization
