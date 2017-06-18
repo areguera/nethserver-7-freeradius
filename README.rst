@@ -1,4 +1,3 @@
-=====================
 nethserver-freeradius
 =====================
 
@@ -30,7 +29,7 @@ addresses against a RADIUS authorization server running NethServer,
 FreeRADIUS and this module.
 
 Installation
-============
+------------
 
 When installed, this package does the following:
 
@@ -50,27 +49,27 @@ When installed, this package does the following:
 * Create `radiusd` at configuration's default databases.
 
 Configuration
-=============
+-------------
 
 In normal operation, the system administrator does the following:
 
 1. Use NethServer FreeRADIUS module to configure what NAS will be able
-to interact with the authorization server. See
-`/etc/raddb/clients.conf` file.
+   to interact with the authorization server. See
+   `/etc/raddb/clients.conf` file.
 
 1. Configure each NAS so as to send authorization request to the
-centralized authorization server (e.g., the system administrator must
-specify the authorization server IP, port number and related secret in
-each device intended to work as NAS).
+   centralized authorization server (e.g., the system administrator
+   must specify the authorization server IP, port number and related
+   secret in each device intended to work as NAS).
 
 1. Use NethServer DHCP module to reserve IP addresses and so, define
-what MAC will be authorized to access the network as well (i.e., only
-the MAC address that has been reserved in NethServer DHCP module will
-have authorized network access by the authorization server). See
-`/etc/raddb/authorized_macs` file.
+   what MAC will be authorized to access the network as well (i.e.,
+   only the MAC address that has been reserved in NethServer DHCP
+   module will have authorized network access by the authorization
+   server). See `/etc/raddb/authorized_macs` file.
 
 Bugs
-====
+----
 
 This module is in a very raw stage and might sure have issues. One of
 them is that MAC-based authorization doesn't provide too much security
@@ -82,14 +81,14 @@ FreeRADIUS integration features like EAP authentication and
 accounting.
 
 Please report your issues at
-https://github.com/areguera/nethserver-freeradius
+https://github.com/areguera/nethserver-freeradius/issues
 
 Author
-======
+------
 
-Alain Reguera Delgado <alain.reguera@gmail.com>
+* Alain Reguera Delgado <alain.reguera@gmail.com>
 
 References
-==========
+----------
 
-http://freeradius.org/
+* http://freeradius.org/
