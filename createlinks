@@ -25,6 +25,7 @@ use esmith::Build::CreateLinks qw(:all);
 # Actions
 #
 event_actions("nethserver-freeradius-update", qw(
+    initialize-default-databases 00
 ));
 event_actions("nethserver-freeradius-save", qw(
 ));
