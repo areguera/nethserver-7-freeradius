@@ -9,8 +9,8 @@ URL: %{url_prefix}/%{name}
 
 BuildRequires: nethserver-devtools
 
-Requires: freeradius >= 3.0.4
-# NethServer dependencies.
+Requires: freeradius >= 2.2.6
+
 
 %description
 This package provides FreeRADIUS integration to NethServer.  The
