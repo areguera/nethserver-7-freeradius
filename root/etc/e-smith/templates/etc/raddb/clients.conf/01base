@@ -2,7 +2,7 @@
 ##
 ## clients.conf -- client configuration directives
 ##
-##	$Id: 76b300d3c55f1c5c052289b76bf28ac3a370bbb2 $
+##	$Id: 729c15d3e84c6cdb54a5f3652d93a2d7f8725fd4 $
 
 #######################################################################
 #
@@ -27,26 +27,14 @@
 #  the "ipaddr" or "ipv6addr" fields.  For compatibility, the 1.x
 #  format is still accepted.
 #
-client localhost \{
-	#  Only *one* of ipaddr, ipv4addr, ipv6addr may be specified for
-	#  a client.
-	#
-	#  ipaddr will accept IPv4 or IPv6 addresses with optional CIDR
-	#  notation '/<mask>' to specify ranges.
-	#
-	#  ipaddr will accept domain names e.g. example.org resolving
-	#  them via DNS.
-	#
-	#  If both A and AAAA records are found, A records will be
-	#  used in preference to AAAA.
+client localhost {
+	#  Allowed values are:
+	#	dotted quad (1.2.3.4)
+	#       hostname    (radius.example.com)
 	ipaddr = 127.0.0.1
 
-	#  Same as ipaddr but allows v4 addresses only. Requires A
-	#  record for domain names.
-#	ipv4addr = *	# any.  127.0.0.1 == localhost
-
-	#  Same as ipaddr but allows v6 addresses only. Requires AAAA
-	#  record for domain names.
+	#  OR, you can use an IPv6 address, but not both
+	#  at the same time.
 #	ipv6addr = ::	# any.  ::1 == localhost
 
 	#
@@ -61,14 +49,27 @@ client localhost \{
 	#  updated, the server WILL NOT see that update.
 	#
 
+	#  One client definition can be applied to an entire network.
+	#  e.g. 127/8 should be defined with "ipaddr = 127.0.0.0" and
+	#  "netmask = 8"
 	#
-	#  The transport protocol.
+	#  If not specified, the default netmask is 32 (i.e. /32)
 	#
-	#  If unspecified, defaults to "udp", which is the traditional
-	#  RADIUS transport.  It may also be "tcp", in which case the
-	#  server will accept connections from this client ONLY over TCP.
+	#  We do NOT recommend using anything other than 32.  There
+	#  are usually other, better ways to achieve the same goal.
+	#  Using netmasks of other than 32 can cause security issues.
 	#
-	proto = *
+	#  You can specify overlapping networks (127/8 and 127.0/16)
+	#  In that case, the smallest possible network will be used
+	#  as the "best match" for the client.
+	#
+	#  Clients can also be defined dynamically at run time, based
+	#  on any criteria.  e.g. SQL lookups, keying off of NAS-Identifier,
+	#  etc.
+	#  See raddb/sites-available/dynamic-clients for details.
+	#
+
+#	netmask = 32
 
 	#
 	#  The shared secret use to "encrypt" and "sign" packets between
@@ -92,12 +93,12 @@ client localhost \{
 	#
 	#  And is at LEAST 8 characters long, preferably 16 characters in
 	#  length.  The secret MUST be random, and should not be words,
-	#  phrase, or anything else that is recognisable.
+	#  phrase, or anything else that is recognizable.
 	#
 	#  The default secret below is only for testing, and should
 	#  not be used in any real environment.
 	#
-	secret = testing123
+	secret		= testing123
 
 	#
 	#  Old-style clients do not send a Message-Authenticator
@@ -115,9 +116,9 @@ client localhost \{
 	#  domain name, or the IP address.
 	#
 	#  It is accepted for compatibility with 1.x, but it is no
-	#  longer necessary in >= 2.0
+	#  longer necessary in 2.0
 	#
-#	shortname = localhost
+#	shortname	= localhost
 
 	#
 	# the following three fields are optional, but may be used by
@@ -125,7 +126,7 @@ client localhost \{
 	#
 
 	#
-	# The nas_type tells 'checkrad.pl' which NAS-specific method to
+	# The nastype tells 'checkrad.pl' which NAS-specific method to
 	#  use to query the NAS for simultaneous use.
 	#
 	#  Permitted NAS types are:
@@ -145,7 +146,7 @@ client localhost \{
 	#	other		# for all other types
 
 	#
-	nas_type	 = other	# localhost isn't usually a NAS...
+	nastype     = other	# localhost isn't usually a NAS...
 
 	#
 	#  The following two configurations are for future use.
@@ -153,8 +154,8 @@ client localhost \{
 	#  login name and password, which is used by checkrad.pl
 	#  when querying the NAS for simultaneous use.
 	#
-#	login	   = !root
-#	password	= someadminpas
+#	login       = !root
+#	password    = someadminpas
 
 	#
 	#  As of 2.0, clients can also be tied to a virtual server.
@@ -170,118 +171,62 @@ client localhost \{
 	#  see raddb/sites-available/originate-coa
 #	coa_server = coa
 
-	#
-	#  Response window for proxied packets.  If non-zero,
-	#  then the lower of (home, client) response_window
-	#  will be used.
-	#
-	#  i.e. it can be used to lower the response_window
-	#  packets from one client to a home server.  It cannot
-	#  be used to raise the response_window.
-	#
-#	response_window = 10.0
-
-	#
-	#  Connection limiting for clients using "proto = tcp".
-	#
-	#  This section is ignored for clients sending UDP traffic
-	#
-	limit \{
-		#
-		#  Limit the number of simultaneous TCP connections from a client
-		#
-		#  The default is 16.
-		#  Setting this to 0 means "no limit"
-		max_connections = 16
-
-		#  The per-socket "max_requests" option does not exist.
-
-		#
-		#  The lifetime, in seconds, of a TCP connection.  After
-		#  this lifetime, the connection will be closed.
-		#
-		#  Setting this to 0 means "forever".
-		lifetime = 0
-
-		#
-		#  The idle timeout, in seconds, of a TCP connection.
-		#  If no packets have been received over the connection for
-		#  this time, the connection will be closed.
-		#
-		#  Setting this to 0 means "no timeout".
-		#
-		#  We STRONGLY RECOMMEND that you set an idle timeout.
-		#
-		idle_timeout = 30
-	\}
-\}
+        #
+        #  Response window for proxied packets.  If non-zero,
+        #  then the lower of (home, client) response_window
+        #  will be used.
+        #
+        #  i.e. it can be used to lower the response_window
+        #  packets from one client to a home server.  It cannot
+        #  be used to raise the response_window.
+        #
+#       response_window = 10.0
+}
 
 # IPv6 Client
-client localhost_ipv6 \{
-	ipv6addr	= ::1
-	secret		= testing123
-\}
-
+#client ::1 {
+#	secret		= testing123
+#	shortname	= localhost
+#}
+#
 # All IPv6 Site-local clients
-#client sitelocal_ipv6 \{
-#	ipv6addr	= fe80::/16
+#client fe80::/16 {
 #	secret		= testing123
-#\}
+#	shortname	= localhost
+#}
 
-#client example.org \{
-#	ipaddr		= radius.example.org
+#client some.host.org {
 #	secret		= testing123
-#\}
+#	shortname	= localhost
+#}
 
 #
 #  You can now specify one secret for a network of clients.
 #  When a client request comes in, the BEST match is chosen.
 #  i.e. The entry from the smallest possible network.
 #
-#client private-network-1 \{
-#	ipaddr		= 192.0.2.0/24
+#client 192.168.0.0/24 {
 #	secret		= testing123-1
-#\}
-
-#client private-network-2 \{
-#	ipaddr		= 198.51.100.0/24
+#	shortname	= private-network-1
+#}
+#
+#client 192.168.0.0/16 {
 #	secret		= testing123-2
-#\}
+#	shortname	= private-network-2
+#}
 
-{
-use esmith::DB::db;
-my $filename = 'radiusd';
-my $db = esmith::DB::db->open($filename) or die esmith::DB->error;
 
-our %nasmap;
+#client 10.10.10.10 {
+#	# secret and password are mapped through the "secrets" file.
+#	secret      = testing123
+#	shortname   = liv1
+#       # the following three fields are optional, but may be used by
+#       # checkrad.pl for simultaneous usage checks
+#	nastype     = livingston
+#	login       = !root
+#	password    = someadminpas
+#}
 
-foreach $k ($db->get_all_by_prop('type', 'nas')) {
-
-	my $NasName = $k->key;
-	my $NasAddr = $k->prop('ipaddr');
-	my $NasPass = $k->prop('secret');
-	my $NasDescription = $k->prop('Description');
-
-	push(@{$nasmap{$NasName}}, {
-		'NasName' => $NasName, 
-		'NasAddr' => $NasAddr, 
-		'NasPass' => $NasPass,
-		'NasDescription' => $NasDescription });
-}
-
-foreach my $k (keys %nasmap) {
-	foreach $v (@{$nasmap{$k}}) {
-		$OUT .= "# ".$v->{'NasDescription'}."\n" if ($v->{'NasDescription'});		
-		$OUT .= sprintf "client %s {\n", $v->{'NasName'};
-		$OUT .= sprintf "\t ipaddr = %s\n", $v->{'NasAddr'};
-		$OUT .= sprintf "\t secret = %s\n", $v->{'NasPass'};
-		$OUT .= "}\n\n";
-	}
-}
-
-return $OUT;
-
-}
 #######################################################################
 #
 #  Per-socket client lists.  The configuration entries are exactly
@@ -294,9 +239,8 @@ return $OUT;
 #  "clients = per_socket_clients".  That IP address/port combination
 #  will then accept ONLY the clients listed in this section.
 #
-#clients per_socket_clients \{
-#	client socket_client \{
-#		ipaddr = 192.0.2.4
+#clients per_socket_clients {
+#	client 192.168.3.4 {
 #		secret = testing123
-#	\}
-#\}
+#        }
+#}
