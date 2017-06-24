@@ -1,7 +1,7 @@
 Name: nethserver-freeradius
 Summary: FreeRADIUS integration in NethServer
-Version: 0.0.1
-Release: 2%{?dist}
+Version: 0.0.2
+Release: 1%{?dist}
 License: GPL
 Source: %{name}-%{version}.tar.gz
 BuildArch: noarch
@@ -40,6 +40,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sat Jun 24 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.2-1
+- Update createlinks file to initialize default databases
+
 * Wed Jun 21 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.1-2
 - Add makedocs macro to build section
 
