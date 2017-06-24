@@ -27,7 +27,7 @@
 #  the "ipaddr" or "ipv6addr" fields.  For compatibility, the 1.x
 #  format is still accepted.
 #
-client localhost {
+client localhost \{
 	#  Allowed values are:
 	#	dotted quad (1.2.3.4)
 	#       hostname    (radius.example.com)
@@ -181,42 +181,42 @@ client localhost {
         #  be used to raise the response_window.
         #
 #       response_window = 10.0
-}
+\}
 
 # IPv6 Client
-#client ::1 {
+#client ::1 \{
 #	secret		= testing123
 #	shortname	= localhost
-#}
+#\}
 #
 # All IPv6 Site-local clients
-#client fe80::/16 {
+#client fe80::/16 \{
 #	secret		= testing123
 #	shortname	= localhost
-#}
+#\}
 
-#client some.host.org {
+#client some.host.org \{
 #	secret		= testing123
 #	shortname	= localhost
-#}
+#\}
 
 #
 #  You can now specify one secret for a network of clients.
 #  When a client request comes in, the BEST match is chosen.
 #  i.e. The entry from the smallest possible network.
 #
-#client 192.168.0.0/24 {
+#client 192.168.0.0/24 \{
 #	secret		= testing123-1
 #	shortname	= private-network-1
-#}
+#\}
 #
-#client 192.168.0.0/16 {
+#client 192.168.0.0/16 \{
 #	secret		= testing123-2
 #	shortname	= private-network-2
-#}
+#\}
 
 
-#client 10.10.10.10 {
+#client 10.10.10.10 \{
 #	# secret and password are mapped through the "secrets" file.
 #	secret      = testing123
 #	shortname   = liv1
@@ -225,7 +225,42 @@ client localhost {
 #	nastype     = livingston
 #	login       = !root
 #	password    = someadminpas
-#}
+#\}
+
+{
+use esmith::DB::db;
+my $filename = 'radiusd';
+my $db = esmith::DB::db->open($filename) or die esmith::DB->error;
+
+our %nasmap;
+
+foreach $k ($db->get_all_by_prop('type', 'nas')) {
+
+    my $NasName = $k->key;
+    my $NasAddr = $k->prop('ipaddr');
+    my $NasPass = $k->prop('secret');
+    my $NasDescription = $k->prop('Description');
+
+    push(@{$nasmap{$NasName}}, {
+        'NasName' => $NasName,
+        'NasAddr' => $NasAddr,
+        'NasPass' => $NasPass,
+        'NasDescription' => $NasDescription });
+}
+
+foreach my $k (keys %nasmap) {
+    foreach $v (@{$nasmap{$k}}) {
+        $OUT .= "# ".$v->{'NasDescription'}."\n" if ($v->{'NasDescription'});
+        $OUT .= sprintf "client %s {\n", $v->{'NasName'};
+        $OUT .= sprintf "\t ipaddr = %s\n", $v->{'NasAddr'};
+        $OUT .= sprintf "\t secret = %s\n", $v->{'NasPass'};
+        $OUT .= "}\n\n";
+    }
+}
+
+return $OUT;
+
+}
 
 #######################################################################
 #
@@ -239,8 +274,8 @@ client localhost {
 #  "clients = per_socket_clients".  That IP address/port combination
 #  will then accept ONLY the clients listed in this section.
 #
-#clients per_socket_clients {
-#	client 192.168.3.4 {
+#clients per_socket_clients \{
+#	client 192.168.3.4 \{
 #		secret = testing123
-#        }
-#}
+#        \}
+#\}
