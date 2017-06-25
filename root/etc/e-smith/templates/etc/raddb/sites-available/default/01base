@@ -222,7 +222,7 @@ authorize \{
 #	\}
 
     # Clean up the Calling-Station-Id...
-    rewrite_calling_station_id
+    rewrite.called_station_id
 
     # Now check against the authorized_macs file
     authorized_macs
