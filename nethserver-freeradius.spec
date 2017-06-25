@@ -1,6 +1,6 @@
 Name: nethserver-freeradius
 Summary: FreeRADIUS integration in NethServer
-Version: 0.0.2
+Version: 0.0.3
 Release: 1%{?dist}
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -40,6 +40,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sun Jun 25 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.3-1
+- Fix call to rewrite.calling_station_id
+
 * Sat Jun 24 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.2-1
 - Update createlinks file to initialize default databases
 
