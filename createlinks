@@ -38,7 +38,7 @@ event_actions("nethserver-freeradius-conf", qw(
 event_templates("nethserver-freeradius-update", qw(
     /etc/raddb/authorized_macs
     /etc/raddb/clients.conf
-    /etc/raddb/mods-available/files
+    /etc/raddb/modules/files
     /etc/raddb/sites-available/default
 ));
 
