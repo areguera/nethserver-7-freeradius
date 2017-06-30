@@ -490,7 +490,7 @@ authenticate \{
 
 	#
 	#  Pluggable Authentication Modules.
-	pam
+#	pam
 
 	#  Uncomment it if you want to use ldap for authentication
 	#
