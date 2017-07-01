@@ -1,6 +1,6 @@
 Name: nethserver-freeradius
 Summary: FreeRADIUS integration in NethServer
-Version: 0.0.2
+Version: 0.0.3
 Release: 1%{?dist}
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -40,6 +40,11 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri 30 Jun 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.3-1
+- Add access to radiusd default NethServer config
+- Add UDPPorts to radiusd default NethServer config
+- Fix pam-related radiusd failure at start-up
+
 * Sat Jun 24 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.2-1
 - Update createlinks file to initialize default databases
 
