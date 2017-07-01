@@ -40,7 +40,7 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Fri 30 Jun 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.3-1
+* Fri Jun 30 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.3-1
 - Add access to radiusd default NethServer config
 - Add UDPPorts to radiusd default NethServer config
 - Fix pam-related radiusd failure at start-up
