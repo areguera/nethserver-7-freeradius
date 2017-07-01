@@ -1,6 +1,6 @@
 Name: nethserver-freeradius
 Summary: FreeRADIUS integration in NethServer
-Version: 0.0.4
+Version: 0.0.5
 Release: 1%{?dist}
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -40,6 +40,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sat Jul 1 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.5-1
+- Fix radiusd network service availability
+
 * Sun Jun 25 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.4-1
 - Fix path in createlinks files
 
