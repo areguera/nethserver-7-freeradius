@@ -21,11 +21,11 @@ namespace NethServer\Module\FreeRADIUS;
  */
 
 /**
- * Nas management for FreeRADIUS module
+ * Authenticators management for FreeRADIUS module
  *
  * @author Alain Reguera Delgado <alain.reguera@gmail.com>
  */
-class Nas extends \Nethgui\Controller\TableController
+class Authenticators extends \Nethgui\Controller\TableController
 {
 
     public function initialize()
@@ -37,11 +37,11 @@ class Nas extends \Nethgui\Controller\TableController
         );
 
         $this
-            ->setTableAdapter($this->getPlatform()->getTableAdapter('radiusd', 'nas'))
+            ->setTableAdapter($this->getPlatform()->getTableAdapter('radiusd', 'authenticators'))
             ->setColumns($columns)
-            ->addRowAction(new \NethServer\Module\FreeRADIUS\Nas\Modify('update'))
-            ->addRowAction(new \NethServer\Module\FreeRADIUS\Nas\Modify('delete'))
-            ->addTableAction(new \NethServer\Module\FreeRADIUS\Nas\Modify('create'))
+            ->addRowAction(new \NethServer\Module\FreeRADIUS\Authenticators\Modify('update'))
+            ->addRowAction(new \NethServer\Module\FreeRADIUS\Authenticators\Modify('delete'))
+            ->addTableAction(new \NethServer\Module\FreeRADIUS\Authenticators\Modify('create'))
             ->addTableAction(new \Nethgui\Controller\Table\Help('Help'))
 	    ;
 

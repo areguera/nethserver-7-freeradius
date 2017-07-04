@@ -253,28 +253,28 @@ use esmith::DB::db;
 my $filename = 'radiusd';
 my $db = esmith::DB::db->open($filename) or die esmith::DB->error;
 
-our %nasmap;
+our %authenticatorsmap;
 
-foreach $k ($db->get_all_by_prop('type', 'nas')) {
+foreach $k ($db->get_all_by_prop('type', 'authenticators')) {
 
-	my $NasName = $k->key;
-	my $NasAddr = $k->prop('ipaddr');
-	my $NasPass = $k->prop('secret');
-	my $NasDescription = $k->prop('Description');
+	my $AuthenticatorName = $k->key;
+	my $AuthenticatorAddr = $k->prop('ipaddr');
+	my $AuthenticatorPass = $k->prop('secret');
+	my $AuthenticatorDescription = $k->prop('Description');
 
-	push(@{$nasmap{$NasName}}, {
-		'NasName' => $NasName, 
-		'NasAddr' => $NasAddr, 
-		'NasPass' => $NasPass,
-		'NasDescription' => $NasDescription });
+	push(@{$authenticatorsmap{$AuthenticatorName}}, {
+		'AuthenticatorName' => $AuthenticatorName,
+		'AuthenticatorAddr' => $AuthenticatorAddr,
+		'AuthenticatorPass' => $AuthenticatorPass,
+		'AuthenticatorDescription' => $AuthenticatorDescription });
 }
 
-foreach my $k (keys %nasmap) {
-	foreach $v (@{$nasmap{$k}}) {
-		$OUT .= "# ".$v->{'NasDescription'}."\n" if ($v->{'NasDescription'});		
-		$OUT .= sprintf "client %s {\n", $v->{'NasName'};
-		$OUT .= sprintf "\t ipaddr = %s\n", $v->{'NasAddr'};
-		$OUT .= sprintf "\t secret = %s\n", $v->{'NasPass'};
+foreach my $k (keys %authenticatorsmap) {
+	foreach $v (@{$authenticatorsmap{$k}}) {
+		$OUT .= "# ".$v->{'AuthenticatorDescription'}."\n" if ($v->{'AuthenticatorDescription'});
+		$OUT .= sprintf "client %s {\n", $v->{'AuthenticatorName'};
+		$OUT .= sprintf "\t ipaddr = %s\n", $v->{'AuthenticatorAddr'};
+		$OUT .= sprintf "\t secret = %s\n", $v->{'AuthenticatorPass'};
 		$OUT .= "}\n\n";
 	}
 }

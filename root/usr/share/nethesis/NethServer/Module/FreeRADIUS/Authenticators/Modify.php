@@ -1,5 +1,5 @@
 <?php
-namespace NethServer\Module\FreeRADIUS\Nas;
+namespace NethServer\Module\FreeRADIUS\Authenticators;
 
 /*
  * Copyright (C) 2017 Nethesis S.r.l.
@@ -24,9 +24,9 @@ use Nethgui\System\PlatformInterface as Validate;
 use Nethgui\Controller\Table\Modify as Table;
 
 /**
- * Modify Nas
+ * Modify Authenticators
  *
- * Generic class to create/update/delete Nas records
+ * Generic class to create/update/delete Authenticators records
  * 
  * @author Alain Reguera Delgado <alain.reguera@gmail.com>
  */
@@ -50,8 +50,8 @@ class Modify extends \Nethgui\Controller\Table\Modify
     {
         parent::prepareView($view);
         $templates = array(
-            'create' => 'NethServer\Template\FreeRADIUS\Nas\Modify',
-            'update' => 'NethServer\Template\FreeRADIUS\Nas\Modify',
+            'create' => 'NethServer\Template\FreeRADIUS\Authenticators\Modify',
+            'update' => 'NethServer\Template\FreeRADIUS\Authenticators\Modify',
             'delete' => 'Nethgui\Template\Table\Delete',
         );
         $view->setTemplate($templates[$this->getIdentifier()]);
@@ -64,7 +64,7 @@ class Modify extends \Nethgui\Controller\Table\Modify
     protected function processDelete($key)
     {
         $accountDb = $this->getPlatform()->getDatabase('radiusd');
-        $accountDb->setType($key, 'nas-deleted');
+        $accountDb->setType($key, 'Authenticators-deleted');
         $deleteProcess = $this->getPlatform()->signalEvent('nethserver-freeradius-update', array($key));
         if ($deleteProcess->getExitCode() === 0) {
             parent::processDelete($key);
