@@ -28,6 +28,8 @@ namespace NethServer\Module\FreeRADIUS;
 class Authenticators extends \Nethgui\Controller\TableController
 {
 
+    public $sortId = 20;
+
     public function initialize()
     {
         $columns = array(
