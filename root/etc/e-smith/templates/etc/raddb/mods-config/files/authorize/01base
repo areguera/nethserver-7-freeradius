@@ -216,14 +216,3 @@ DEFAULT	Hint == "SLIP"
 # You should add test accounts to the TOP of this file! #
 # See the example user "bob" above.                     #
 #########################################################
-
-{
-my $PolicyIEEE8021X = $radiusd{'PolicyIEEE8021X'};
-
-if ( $PolicyIEEE8021X eq "yes" ) {
-
-    $OUT .= <<"HERE";
-DEFAULT	Auth-Type = Pam
-HERE
-}
-}

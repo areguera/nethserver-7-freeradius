@@ -328,7 +328,7 @@ authorize \{
 	#  Otherwise, when the first style of realm doesn't match,
 	#  the other styles won't be checked.
 	#
-#	suffix
+	suffix
 #	ntdomain
 
 {
@@ -558,7 +558,7 @@ authenticate \{
 
 	#
 	#  Pluggable Authentication Modules.
-	pam
+#	pam
 
 	#  Uncomment it if you want to use ldap for authentication
 	#
@@ -577,7 +577,7 @@ authenticate \{
 
 	#
 	#  Allow EAP authentication.
-#	eap
+	eap
 
 	#
 	#  The older configurations sent a number of attributes in
