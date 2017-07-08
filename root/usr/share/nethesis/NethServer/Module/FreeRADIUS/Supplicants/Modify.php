@@ -35,8 +35,8 @@ class Modify extends \Nethgui\Controller\Table\Modify
     public function initialize()
     {
         $parameterSchema = array(
-            array('key', Validate::NOTEMPTY, Table::KEY),
-            array('mac', Validate::MACADDRESS, Table::FIELD),
+            array('key', Validate::MACADDRESS, Table::KEY),
+            array('username', Validate::USERNAME, Table::FIELD),
             array('password', Validate::NOTEMPTY, Table::FIELD),
             array('Description', Validate::ANYTHING, Table::FIELD),
         );

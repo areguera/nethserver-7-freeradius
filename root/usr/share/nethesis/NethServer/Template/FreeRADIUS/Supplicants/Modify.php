@@ -14,7 +14,7 @@ if ($view->getModule()->getIdentifier() == 'update') {
 echo $view->header('key')->setAttribute('template', $headerText);
 
 echo $view->textInput('key', $keyStyles);
-echo $view->textInput('mac');
+echo $view->textInput('username');
 echo $view->textInput('password');
 echo $view->textInput('Description');
 

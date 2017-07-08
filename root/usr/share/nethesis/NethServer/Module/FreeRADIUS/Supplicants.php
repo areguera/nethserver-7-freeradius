@@ -34,7 +34,7 @@ class Supplicants extends \Nethgui\Controller\TableController
     {
         $columns = array(
             'key',
-            'mac',
+            'username',
             'password',
             'Description',
             'Actions'
