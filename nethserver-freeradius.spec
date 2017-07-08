@@ -1,6 +1,6 @@
 Name: nethserver-freeradius
 Summary: FreeRADIUS integration in NethServer
-Version: 0.0.3
+Version: 0.0.4
 Release: 1%{?dist}
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -40,6 +40,12 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Jul 7 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.4-1
+- Rename tab from "NAS" to "Authenticators"
+- Add new tab "Authentication Server" to control network access
+- Update online documentation
+- Update radiusd configuration files and its permissions
+
 * Fri Jun 30 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.3-1
 - Add access to radiusd default NethServer config
 - Add UDPPorts to radiusd default NethServer config
@@ -52,4 +58,4 @@ rm -rf %{buildroot}
 - Add makedocs macro to build section
 
 * Mon Jun 19 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.1-1
-- Initial commit
+- Initial build
