@@ -216,3 +216,34 @@ DEFAULT	Hint == "SLIP"
 # You should add test accounts to the TOP of this file! #
 # See the example user "bob" above.                     #
 #########################################################
+
+{
+use esmith::DB::db;
+my $filename = 'radiusd';
+my $db = esmith::DB::db->open($filename) or die esmith::DB->error;
+
+our %supplicantsmap;
+
+foreach $k ($db->get_all_by_prop('type', 'supplicants')) {
+
+	my $SupplicantUser = $k->prop('username');
+	my $SupplicantPass = $k->prop('password');
+	my $SupplicantDescription = $k->prop('Description');
+
+	push(@{$supplicantsmap{$SupplicantMac}}, {
+		'SupplicantUser' => $SupplicantUser,
+		'SupplicantPass' => $SupplicantPass,
+		'SupplicantDescription' => $SupplicantDescription });
+}
+
+foreach my $k (keys %supplicantsmap) {
+	foreach $v (@{$supplicantsmap{$k}}) {
+		$OUT .= "# ".$v->{'SupplicantDescription'}."\n" if ($v->{'SupplicantDescription'});
+		$OUT .= sprintf "%s Cleartext-Password := \"%s\"\n", $v->{'SupplicantUser'}, $v->{'SupplicantPass'};
+		$OUT .= sprintf "\tReply-Message := \"Hello, %\{User-Name\}\"\n\n";
+	}
+}
+
+return $OUT;
+
+}
