@@ -16,6 +16,19 @@ configure the authenticators devices nor the supplicants in your
 network. That is something you must do first, before you can enjoy a
 successful RADIUS infrastructure.
 
+Installation
+------------
+
+To install nethserver-freeradius package, run the following command
+(as the root user):
+
+```
+yum --enablerepo=nethforge-testing install nethserver-freeradius
+```
+
+Configuration
+-------------
+
 In normal operation, the system administrator does the following:
 
 1. Use the authentication server tab in FreeRADIUS panel to configure
@@ -48,18 +61,8 @@ do the following:
 3. Communicate final users (e.g., using the e-mail system) the
    credentials they must use in order to access the network.
 
-Installation
-============
-
-To install nethserver-freeradius package, run the following command
-(as the root user):
-
-```
-yum --enablerepo=nethforge-testing install nethserver-freeradius
-```
-
 Use Case
-========
+--------
 
 This package might be useful for system administrators needing to
 control the network access of its users as well as provide mobility to
@@ -89,17 +92,17 @@ In this infrastructure:
    supplicant.
 
 Bugs
-====
+----
 
 https://github.com/areguera/nethserver-freeradius/issues
 
 Author
-======
+------
 
 * Alain Reguera Delgado <alain.reguera@gmail.com>
 
 References
-==========
+----------
 
 * http://freeradius.org/
 * http://networkradius.com/doc/FreeRADIUS-Technical-Guide.pdf
