@@ -1,30 +1,31 @@
 nethserver-freeradius
 =====================
 
-The FreeRADIUS panel allows you to control the network access (i.e.,
-what devices can access the network). In order for this to work, you
-must set and configure one or more intermediate authenticator devices
-(also known as "Network Access Server" or simply "NAS") so for users
-(also known as "supplicants") to connect to.  Finally, the centralized
-"authentication server" must be configured to process access requests
-sent from Authenticators. The correct coordination of all these
-elements is also know as "RADIUS infrastructure."
+This package provides integration for FreeRADIUS in NethServer. It
+turns your server into a centralized network authentication server, so
+you can easily control what devices can access the network. The
+authentication server is prepared to control network access using MAC
+address, IEEE802.1X or both.
 
-The FreeRADIUS panel helps you to configure the authentication server
-in an already running NethServer computer but it doesn't help you to
-configure the authenticators devices nor the supplicants in your
-network. That is something you must do first, before you can enjoy a
-successful RADIUS infrastructure.
+The authentication server provided by this package is only one
+component of the three elements a RADIUS infrastructure is made of.
+The other two elements (the authenticator and the supplicant) are not
+configured by this package.  That is something you must do first,
+before you can enjoy a successful RADIUS infrastructure.
 
 Installation
 ------------
 
-To install nethserver-freeradius package, run the following command
+To install `nethserver-freeradius` package, run the following command
 (as the root user):
 
 ```
 yum --enablerepo=nethforge-testing install nethserver-freeradius
 ```
+
+After installation look for "FreeRADIUS" panel in the "Configuration"
+section of NethServer web interface. It should provide three tabs
+named "Authentication Server", "Authenticators", and "Supplicants".
 
 Configuration
 -------------
