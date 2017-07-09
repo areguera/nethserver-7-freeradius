@@ -1,43 +1,33 @@
 
 {
-    use esmith::HostsDB;
-    my $hdb = esmith::HostsDB->open_ro() || return '# hosts DB is not available';
+use esmith::DB::db;
+my $filename = 'radiusd';
+my $db = esmith::DB::db->open($filename) or die esmith::DB->error;
 
-    our %macmap;
+our %supplicantsmap;
 
-    foreach $host ($hdb->get_all_by_prop('type', 'local')) {
+foreach $k ($db->get_all_by_prop('type', 'supplicants')) {
 
-        my $IpAddress = $host->prop('IpAddress') || '';
-        my $MacAddress = $host->prop('MacAddress') || '';
+	my $SupplicantMAC = $k->key;
+	my $SupplicantDescription = $k->prop('Description');
 
-        if ($IpAddress eq '' || $MacAddress eq '') {
-	        # skip all entries without IP or MAC
-	        next;
-        } else {
-            # convert all MAC entries to FreeRADIUS default MAC
-            # format. This helps us to reduce the number of
-            # configuration files to change.
-            $MacAddress =~ s/:/-/g;
-	    }
-
-        if (! exists($macmap{$MacAddress})) {
-            $macmap{$MacAddress} = [];
-        }
-
-        my $Description = $host->prop('Description') || "";
-
-        push(@{$macmap{$MacAddress}}, {'MacAddress' => lc($MacAddress), 'Description' => $Description, 'Host' => $host->key});
-
+    # Convert all MAC entries to FreeRADIUS default MAC format.  This
+    # helps to reduce the number of configuration files to change.
+    if ($SupplicantMAC ne '') {
+        $SupplicantMAC =~ s/:/-/g;
     }
 
-    foreach my $mac (keys %macmap) {
-        foreach $el (@{$macmap{$mac}}) {
-            $OUT .= "# Host: ".$el->{'Host'}."\n" if($el->{'Host'});
-            $OUT .= "# ".$el->{'Description'}."\n" if($el->{'Description'});
-            $OUT .= sprintf "%-17s\n", $el->{'MacAddress'};
-            $OUT .= sprintf "\t%s\n\n", 'Reply-Message = "Device with MAC Address %\{Calling-Station-Id\} authorized for network access"';
-        }
-    }
+	push(@{$supplicantsmap{$SupplicantMAC}}, {
+		'SupplicantMAC' => $SupplicantMAC,
+		'SupplicantDescription' => $SupplicantDescription });
 
-    return $OUT;
+    foreach $v (@{$supplicantsmap{$k}}) {
+        $OUT .= "# ".$v->{'SupplicantDescription'}."\n" if($v->{'SupplicantDescription'});
+        $OUT .= sprintf "%-17s\n", $v->{'SupplicantMAC'};
+        $OUT .= sprintf "\t%s\n\n", 'Reply-Message = "Device with MAC Address %\{Calling-Station-Id\} authorized for network access"';
+    }
+}
+
+return $OUT;
+
 }
