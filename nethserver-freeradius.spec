@@ -13,11 +13,17 @@ Requires: freeradius >= 3.0.4
 # NethServer dependencies.
 
 %description
-This package provides FreeRADIUS integration to NethServer.  The
-integration turns NethServer into a MAC-based centralized
-authorization server for your network. In normal operation, the system
-administrator uses NethServer DHCP module to reserve IP addresses and
-so, define what MACs will be authorized to access the network.
+This package provides integration for FreeRADIUS in NethServer. It
+turns your server into a centralized network authentication server, so
+you can easily control what devices can access the network. The
+authentication server is prepared to control network access using MAC
+address, IEEE802.1X or both.
+
+The authentication server provided by this package is only one
+component of the three elements a RADIUS infrastructure is made of.
+The other two elements (the authenticator and the supplicant) are not
+configured by this package.  That is something you must do first,
+before you can enjoy a successful RADIUS infrastructure.
 
 %prep
 %setup
@@ -40,11 +46,16 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Fri Jul 7 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.4-1
-- Rename tab from "NAS" to "Authenticators"
-- Add new tab "Authentication Server" to control network access
+* Sun Jul 9 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.4-1
+- Add new tab dedicated to authentication server
+- Add new tab dedicated to supplicants
+- Update radiusd configuration based on supplicants database
+- Update authorized_macs based on supplicants database instead of hosts database
 - Update online documentation
-- Update radiusd configuration files and its permissions
+- Update configuration file permissions
+- Update header using lower-case words
+- Update server authentication to use both MAC address and IEEE802.1X
+- Use Authenticators tab name instead of just NAS
 
 * Fri Jun 30 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.3-1
 - Add access to radiusd default NethServer config
