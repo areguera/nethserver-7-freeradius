@@ -19,9 +19,7 @@ Installation
 To install `nethserver-freeradius` package, run the following command
 (as the root user):
 
-```
-yum --enablerepo=nethforge-testing install nethserver-freeradius
-```
+    yum --enablerepo=nethforge-testing install nethserver-freeradius
 
 After installation look for "FreeRADIUS" panel in the "Configuration"
 section of NethServer web interface. It should provide three tabs
@@ -95,7 +93,7 @@ In this infrastructure:
 Bugs
 ----
 
-https://github.com/areguera/nethserver-freeradius/issues
+* https://github.com/areguera/nethserver-freeradius/issues
 
 Author
 ------
