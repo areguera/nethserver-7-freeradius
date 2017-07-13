@@ -46,7 +46,7 @@ do the following:
 2. Configure supplicant devices (e.g., wireless stations) to send
    authentication requests to authenticator devices.
 
-3. Communicate final users (e.g., using the e-mail system) the
+3. Communicate final users (e.g., using a sealed letter) the
    credentials they must use in order to access the network.
 
 Authentication Server
@@ -55,18 +55,18 @@ Authentication Server
 The authentication server tab in FreeRADIUS panel implements one of
 the following possible configurations:
 
-MAC address::
+MAC address
     Authenticators must verify MAC address before allow network access.
 
-Username and password (IEEE802.1X)::
+Username and password (IEEE802.1X)
     Authenticators must verify username and password before alow
     network access.
 
-MAC address + username and password (IEEE802.1X)::
+MAC address + username and password (IEEE802.1X)
     Authenticators must verify both MAC address and credentials (i.e.,
     username and password) before allow network access.
 
-None::
+None
     Authenticators rejects network access.
 
 The authentication server stores passwords using a clear-text format
@@ -89,19 +89,19 @@ Authentication Server). The Authenticator requires authentication from
 Supplicant and communicate with Authentication Server to determine
 whether to accept or reject the network access to Supplicant.
 
-Name::
+Name
     Contains a string identifying the Authenticator originating the
     access request. It MUST NOT be used to select the shared
     secret used to authenticate the request.
 
-IP Address::
+IP Address
     Indicates the identifying IP Address of the Authenticator which is
     requesting authentication of the user, and SHOULD be unique to the
     Authenticator within the scope of the Authentication Server. Note
     that IP Address MUST NOT be used to select the shared secret used
     to authenticate the request.
 
-Secret::
+Secret
     Password shared between the Authenticator and the Authentication
     Server. It should be at least as large and unguessable as a well
     chosen password.  It is preferred that the secret be at least 16
@@ -110,7 +110,7 @@ Secret::
     The secret MUST NOT be empty (length 0) since this would allow
     packets to be trivially forged.
 
-Description::
+Description
     Contains an arbitrary string describing the Authenticator (e.g.,
     its purpose).
 
@@ -121,15 +121,15 @@ The Supplicants tab in the FreeRADIUS panel defines what devices the
 final users can use to access the network. This tab relates the
 following information:
 
-MAC address::
+MAC address
     Contains authorized MAC address to access the network.
 
-Username::
+Username
     Contains authorized username to access the network.
 
-Password::
+Password
     Contains authorized password to access the network.
 
-Description::
+Description
     Contains an arbitrary string describing the device used to access
-    the network (e.g., its propietary, location, etc.).
+    the network (e.g., its proprietary, location, etc.).
