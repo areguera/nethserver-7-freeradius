@@ -1,5 +1,3 @@
-{
-    $OUT .= <<'HERE';
 # -*- text -*-
 #
 #  $Id: c14992f05c13983fa0c0f9bcead4c1cf0c1bb801 $
@@ -8,42 +6,49 @@
 #
 # See "man users" for more information.
 #
-files {
+files \{
 	# Search for files in a subdirectory of mods-config which
 	# matches this instance of the files module.
-	moddir = ${modconfdir}/${.:instance}
+	moddir = $\{modconfdir\}/$\{.:instance\}
 
 	# The default key attribute to use for matches.  The content
 	# of this attribute is used to match the "name" of the
 	# entry.
-	#key = "%{%{Stripped-User-Name}:-%{User-Name}}"
+	#key = "%\{%\{Stripped-User-Name\}:-%\{User-Name\}\}"
 
 	#  The old "users" style file is now located here.
-	filename = ${moddir}/authorize
+	filename = $\{moddir\}/authorize
 
 	#  This is accepted for backwards compatibility
 	#  It will be removed in a future release.
-	usersfile = ${moddir}/authorize
+	usersfile = $\{moddir\}/authorize
 
 	#  These are accepted for backwards compatibility.
 	#  They will be renamed in a future release.
-	acctusersfile = ${moddir}/accounting
-	preproxy_usersfile = ${moddir}/pre-proxy
-}
+	acctusersfile = $\{moddir\}/accounting
+	preproxy_usersfile = $\{moddir\}/pre-proxy
+\}
 
-files authorized_macs {
+{
+my $PolicyMAC = $radiusd{'PolicyMAC'};
+
+if ( $PolicyMAC eq "yes" ) {
+
+    $OUT .= <<"HERE";
+files authorized_macs \{
         # The default key attribute to use for matches.  The content
         # of this attribute is used to match the "name" of the
         # entry.
-        key = "%{Calling-Station-ID}"
+        key = "%\{Calling-Station-ID\}"
 
-        usersfile = ${confdir}/authorized_macs
+        usersfile = \$\{confdir\}/authorized_macs
 
         # If you want to use the old Cistron 'users' file
         # with FreeRADIUS, you should change the next line
         # to 'compat = cistron'.  You can the copy your 'users'
         # file from Cistron.
         compat = no
-        }
+        \}
 HERE
+}
 }

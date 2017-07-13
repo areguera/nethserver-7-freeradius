@@ -20,32 +20,30 @@ namespace NethServer\Module\FreeRADIUS;
  * along with NethServer.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Nethgui\System\PlatformInterface as Validate;
+
 /**
- * Nas management for FreeRADIUS module
+ * Server management for FreeRADIUS module
  *
  * @author Alain Reguera Delgado <alain.reguera@gmail.com>
  */
-class Nas extends \Nethgui\Controller\TableController
+class Server extends \Nethgui\Controller\AbstractController
 {
+
+    public $sortId = 10;
 
     public function initialize()
     {
-        $columns = array(
-            'key',
-            'Description',
-            'Actions'
-        );
+        parent::initialize();
 
         $this
-            ->setTableAdapter($this->getPlatform()->getTableAdapter('radiusd', 'nas'))
-            ->setColumns($columns)
-            ->addRowAction(new \NethServer\Module\FreeRADIUS\Nas\Modify('update'))
-            ->addRowAction(new \NethServer\Module\FreeRADIUS\Nas\Modify('delete'))
-            ->addTableAction(new \NethServer\Module\FreeRADIUS\Nas\Modify('create'))
-            ->addTableAction(new \Nethgui\Controller\Table\Help('Help'))
-	    ;
+            ->declareParameter('PolicyMAC', Validate::BOOLEAN, array('configuration', 'radiusd', 'PolicyMAC'))
+            ->declareParameter('PolicyIEEE8021X', Validate::BOOLEAN, array('configuration', 'radiusd', 'PolicyIEEE8021X'))
+            ;
+    }
 
-        parent::initialize();
+    protected function onParametersSaved($changedParameters) {
+        $this->getPlatform()->signalEvent('nethserver-freeradius-update@post-process');
     }
 
 }

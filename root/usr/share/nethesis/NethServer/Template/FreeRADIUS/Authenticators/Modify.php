@@ -4,10 +4,10 @@
 $view->requireFlag($view::INSET_FORM);
 
 if ($view->getModule()->getIdentifier() == 'update') {
-    $headerText = $T('Update nas `${0}`');
+    $headerText = $T('Update authenticator `${0}`');
     $keyStyles = $view::STATE_READONLY;
 } else {
-    $headerText = $T('Create a new NAS');
+    $headerText = $T('Create a new authenticator');
     $keyStyles = 0;
 }
 
