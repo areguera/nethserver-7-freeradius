@@ -57,7 +57,7 @@ do the following:
 2. Configure supplicant devices (e.g., wireless stations) to send
    authentication requests to authenticator devices.
 
-3. Communicate final users (e.g., using the e-mail system) the
+3. Communicate final users (e.g., using a sealed letter) the
    credentials they must use in order to access the network.
 
 Use Case
