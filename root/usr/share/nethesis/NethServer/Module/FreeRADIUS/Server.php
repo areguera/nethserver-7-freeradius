@@ -25,6 +25,8 @@ use Nethgui\System\PlatformInterface as Validate;
 /**
  * Server management for FreeRADIUS module
  *
+ * @author Davide Principi <davide.principi@nethesis.it>
+ * @since 1.0
  * @author Alain Reguera Delgado <alain.reguera@gmail.com>
  */
 class Server extends \Nethgui\Controller\AbstractController

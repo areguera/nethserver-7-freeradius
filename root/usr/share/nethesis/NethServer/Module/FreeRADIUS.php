@@ -23,6 +23,8 @@ namespace NethServer\Module;
 /**
  * Implementation of FreeRADIUS module.
  *
+ * @author Davide Principi <davide.principi@nethesis.it>
+ * @since 1.0
  * @author Alain Reguera Delgado <alain.reguera@gmail.com>
  */
 class FreeRADIUS extends \Nethgui\Controller\TabsController

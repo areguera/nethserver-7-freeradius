@@ -23,6 +23,8 @@ namespace NethServer\Module\FreeRADIUS;
 /**
  * Supplicants management for FreeRADIUS module
  *
+ * @author Davide Principi <davide.principi@nethesis.it>
+ * @since 1.0
  * @author Alain Reguera Delgado <alain.reguera@gmail.com>
  */
 class Supplicants extends \Nethgui\Controller\TableController

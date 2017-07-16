@@ -28,6 +28,8 @@ use Nethgui\Controller\Table\Modify as Table;
  *
  * Generic class to create/update/delete Supplicants records
  * 
+ * @author Davide Principi <davide.principi@nethesis.it>
+ * @since 1.0
  * @author Alain Reguera Delgado <alain.reguera@gmail.com>
  */
 class Modify extends \Nethgui\Controller\Table\Modify
