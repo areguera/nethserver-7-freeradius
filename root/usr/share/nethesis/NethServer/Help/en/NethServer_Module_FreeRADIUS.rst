@@ -2,68 +2,134 @@
 FreeRADIUS
 ==========
 
-This module enables a MAC-based centralized authorization server for
-you to control network access (i.e., what devices can connect the
-network). In order for this to work, you must set and configure one or
-more intermediate devices known as Network Access Server (NAS) for
-users (also known as "supplicants") to connect to. Finally, you must
-configure the centralized authorization server to accept authorization
-requests sent from these devices (e.g., access points, smart switches,
-etc.).
+The FreeRADIUS panel allows you to control the network access (i.e.,
+what devices can access the network). In order for this to work, you
+must set and configure one or more intermediate authenticator devices
+(also known as "Network Access Server" or simply "NAS") so for users
+(also known as "supplicants") to connect to.  Finally, the centralized
+"authentication server" must be configured to process access requests
+sent from Authenticators. The correct coordination of all these
+elements is also know as "RADIUS infrastructure."
 
-This module helps you reduce the configuration the centralized
-authorization server needs but it doesn't help you configure NAS
-devices in your network. So you must configure these devices yourself
-before enjoy a successful MAC-based centralized authorization
-infrastructure.
-
-This module implements MAC-based authorization only. It doesn't
-implement authentication, nor accounting.
+The FreeRADIUS panel helps you to configure the authentication server
+in an already running NethServer computer but it doesn't help you to
+configure the authenticators devices nor the supplicants in your
+network. That is something you must do first, before you can enjoy a
+successful RADIUS infrastructure.
 
 In normal operation, the system administrator does the following:
 
-1. Configure each NAS so as to send authorization request to the
-   centralized authorization server (e.g., the system administrator
-   must specify the authorization server IP, port number and related
-   secret in each device intended to work as NAS).
+1. Use the authentication server tab in FreeRADIUS panel to configure
+   how authenticators will allow supplicants to access the network.
+   Possible options include MAC address, IEEE802.1X or a combination
+   of them both. See `/etc/raddb/sites-available/default` file.
 
-1. Use NethServer FreeRADIUS module to configure what NAS will be able
-   to interact with the authorization server. See
+2. Use the authenticator tab in FreeRADIUS panel to define what
+   authenticator devices (e.g., access points, smart switches) can
+   send access requests to the authentication server. See
    `/etc/raddb/clients.conf` file.
 
-1. Use NethServer DHCP module to reserve IP addresses and so, define
-   what MAC will be authorized to access the network as well (i.e.,
-   only the MAC address that has been reserved in NethServer DHCP
-   module will have authorized network access by the authorization
-   server). See `/etc/raddb/authorized_macs` file.
+3. Use the supplicants tab in FreeRADIUS panel to define the MAC
+   address and credentials (i.e., username and password) final users
+   must set in their devices (e.g., wireless stations) to access the
+   network. See `/etc/raddb/authorized_macs` and `/etc/raddb/users`
+   files.
 
-For example, consider a local wireless community which infrastructure
-is using two lines of Nano Stations devices, one configured to serve
-as access points and other dedicated to client stations. In order for
-the system administrator to control what client stations can access
-the network in a centralize MAC-base authorization infrastructure, the
-access points must be configured as NAS of a RADIUS server where the
-authorization takes place. The RADIUS server, in this case, would be
-the computer running NethServer with nethserver-freeradius module
-installed.
+In addition to these basic steps, the system administrator might also
+do the following:
 
-NAS
-===
+1. Configure authenticator devices (e.g., access points, smart
+   switches) as authenticator of the authentication server (i.e., to
+   accept authentication requests from supplicants and request access
+   to the centralized authentication server based on them).
 
-This tab controls what NAS (e.g., access points, smart switches) are
-allowed to communicate with the central authorization server.
+2. Configure supplicant devices (e.g., wireless stations) to send
+   authentication requests to authenticator devices.
+
+3. Communicate final users (e.g., using a sealed letter) the
+   credentials they must use in order to access the network.
+
+Authentication Server
+=====================
+
+The authentication server tab in FreeRADIUS panel implements one of
+the following possible configurations:
+
+MAC address
+    Authenticators must verify MAC address before allow network access.
+
+Username and password (IEEE802.1X)
+    Authenticators must verify username and password before alow
+    network access.
+
+MAC address + username and password (IEEE802.1X)
+    Authenticators must verify both MAC address and credentials (i.e.,
+    username and password) before allow network access.
+
+None
+    Authenticators rejects network access.
+
+The authentication server stores passwords using a clear-text format
+in the `/etc/raddb/users` file, so as to validate users requesting
+network access through IEEE802.1X protocol.  It is necessary for
+supplicants to secure the communication channel before transmitting
+their credentials over the wire (e.g., using protocols like EAP-TTLS
+and EAP-PEAP). In the authentication server, the `/etc/raddb/users` is
+a symbolic link to `/etc/raddb/mods-config/files/authorize` which can
+be read only by users in the *radiusd* group and the *root* user
+itself.
+
+Authenticators
+==============
+
+The Authenticators tab in FreeRADIUS panel defines what devices (e.g.,
+access points, smart switches) will be Authenticators in the RADIUS
+infrastructure (i.e., intermediate devices between Supplicant and
+Authentication Server). The Authenticator requires authentication from
+Supplicant and communicate with Authentication Server to determine
+whether to accept or reject the network access to Supplicant.
 
 Name
-    The name used to identify the NAS.
+    Contains a string identifying the Authenticator originating the
+    access request. It MUST NOT be used to select the shared
+    secret used to authenticate the request.
 
 IP Address
-    The IP address the NAS responds to. This is the IP address of the
-    access point or smart switch you configured as NAS.
+    Indicates the identifying IP Address of the Authenticator which is
+    requesting authentication of the user, and SHOULD be unique to the
+    Authenticator within the scope of the Authentication Server. Note
+    that IP Address MUST NOT be used to select the shared secret used
+    to authenticate the request.
 
 Secret
-    An arbitrary text used to secure the NAS. This information must be
-    the same in both the central authorization server and the NAS so
-    they can exchange messages.
+    Password shared between the Authenticator and the Authentication
+    Server. It should be at least as large and unguessable as a well
+    chosen password.  It is preferred that the secret be at least 16
+    octets.  This is to ensure a sufficiently large range for the
+    secret to provide protection against exhaustive search attacks.
+    The secret MUST NOT be empty (length 0) since this would allow
+    packets to be trivially forged.
 
 Description
-    An arbitrary text used to describe the NAS (e.g., its purpose).
+    Contains an arbitrary string describing the Authenticator (e.g.,
+    its purpose).
+
+Supplicant
+==========
+
+The Supplicants tab in the FreeRADIUS panel defines what devices the
+final users can use to access the network. This tab relates the
+following information:
+
+MAC address
+    Contains authorized MAC address to access the network.
+
+Username
+    Contains authorized username to access the network.
+
+Password
+    Contains authorized password to access the network.
+
+Description
+    Contains an arbitrary string describing the device used to access
+    the network (e.g., its proprietary, location, etc.).
