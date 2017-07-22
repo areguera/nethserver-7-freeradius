@@ -1,6 +1,6 @@
 Name: nethserver-freeradius
 Summary: FreeRADIUS integration in NethServer
-Version: 0.0.4
+Version: 0.0.5
 Release: 1%{?dist}
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -46,6 +46,12 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sat Jul 22 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.5-1
+- Fix radiusd (authorized_macs) start-up issue
+- Add credit to Davide Principi as author
+- Update online documentation (small fixes)
+- Fix contradiction in README.rst
+
 * Sun Jul 9 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.4-1
 - Add new tab dedicated to authentication server
 - Add new tab dedicated to supplicants
