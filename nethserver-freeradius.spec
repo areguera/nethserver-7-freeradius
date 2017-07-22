@@ -1,6 +1,6 @@
 Name: nethserver-freeradius
 Summary: FreeRADIUS integration in NethServer
-Version: 0.0.5
+Version: 0.0.6
 Release: 1%{?dist}
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -13,11 +13,17 @@ Requires: freeradius >= 2.2.6
 
 
 %description
-This package provides FreeRADIUS integration to NethServer.  The
-integration turns NethServer into a MAC-based centralized
-authorization server for your network. In normal operation, the system
-administrator uses NethServer DHCP module to reserve IP addresses and
-so, define what MACs will be authorized to access the network.
+This package provides integration for FreeRADIUS in NethServer. It
+turns your server into a centralized network authentication server, so
+you can easily control what devices can access the network. The
+authentication server is prepared to control network access using MAC
+address, IEEE802.1X or both.
+
+The authentication server provided by this package is only one
+component of the three elements a RADIUS infrastructure is made of.
+The other two elements (the authenticator and the supplicant) are not
+configured by this package.  That is something you must do first,
+before you can enjoy a successful RADIUS infrastructure.
 
 %prep
 %setup
@@ -40,6 +46,16 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sat Jul 22 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.6-1
+- Update README.rst
+- Add authorized_macs configuration file
+- Add configuration templates metadata
+- Add PolicyMAC and PolicyIEEE8021X default config
+- Add raddb users configuration template
+- Update NethServer module, help, language, template
+- Update raddb configuration templates
+- Remove host create, delete and modify events
+
 * Sat Jul 1 2017 Alain Reguera Delgado <alain.reguera@gmail.com> - 0.0.5-1
 - Fix radiusd network service availability
 
