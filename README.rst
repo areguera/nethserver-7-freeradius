@@ -1,87 +1,99 @@
 nethserver-freeradius
 =====================
 
-This module enables a MAC-based centralized authorization server for
-you to control network access (i.e., what devices can connect the
-network). In order for this to work, you must set and configure one or
-more intermediate devices known as Network Access Server (NAS), then
-connect users (also known as "supplicants") through them. Finally, you
-must configure the centralized authorization server to accept
-authorization requests sent from these NAS devices (e.g., access
-points, smart switches, etc.). See [FreeRADIUS Technical
-Guide](http://networkradius.com/doc/FreeRADIUS-Technical-Guide.pdf).
+This package provides integration for FreeRADIUS in NethServer. It
+turns your server into a centralized network authentication server, so
+you can easily control what devices can access the network. The
+authentication server is prepared to control network access using MAC
+address, IEEE802.1X or both.
 
-This module doesn't implement authentication, nor accounting right
-now.
-
-This module helps you reduce the configuration the centralized
-authorization server needs but it doesn't help you configure NAS
-devices in your network. So you must configure these devices yourself
-before enjoy a successful centralized authorization infrastructure.
-
-This package might be useful for system administrators from wireless
-communities needing to control the network access of its users as well
-as provide mobility to them.  For example, consider local wireless
-communities made of Nano Station devices in which one line of these
-devices is configured as access points and the rest of them as client
-stations. The access points are also configured to validate MAC
-addresses against a RADIUS authorization server running NethServer,
-FreeRADIUS and this module.
+The authentication server provided by this package is only one
+component of the three elements a RADIUS infrastructure is made of.
+The other two elements (the authenticator and the supplicant) are not
+configured by this package.  That is something you must do first,
+before you can enjoy a successful RADIUS infrastructure.
 
 Installation
 ------------
 
-When installed, this package does the following:
+To install `nethserver-freeradius` package, run the following command
+(as the root user):
 
-* Install package dependencies (e.g., `freeradius`).
+    yum --enablerepo=nethforge-testing install nethserver-freeradius
 
-* Customize FreeRADIUS default configuration files (e.g.,
-  `/etc/raddb/sites-available/default` and
-  `/etc/raddb/mods-available/files`) so to turn it into a MAC-based
-  authentication server, as described in
-  https://wiki.freeradius.org/guide/Mac-Auth.
-
-* Create FreeRADIUS link to NethServer configuration panel to manage
-  NAS information (e.g., name, address, secret and desciption). Only
-  NAS configured here will be able to send authorization request to
-  the authentication sever.
-
-* Create `radiusd` at configuration's default databases.
+After installation look for "FreeRADIUS" panel in the "Configuration"
+section of NethServer web interface. It should provide three tabs
+named "Authentication Server", "Authenticators", and "Supplicants".
 
 Configuration
 -------------
 
 In normal operation, the system administrator does the following:
 
-1. Use NethServer FreeRADIUS module to configure what NAS will be able
-   to interact with the authorization server. See
+1. Use the authentication server tab in FreeRADIUS panel to configure
+   how authenticators will allow supplicants to access the network.
+   Possible options include MAC address, IEEE802.1X or a combination
+   of them both. See `/etc/raddb/sites-available/default` file.
+
+2. Use the authenticator tab in FreeRADIUS panel to define what
+   authenticator devices (e.g., access points, smart switches) can
+   send access requests to the authentication server. See
    `/etc/raddb/clients.conf` file.
 
-2. Configure each NAS so as to send authorization request to the
-   centralized authorization server (e.g., the system administrator
-   must specify the authorization server IP, port number and related
-   secret in each device intended to work as NAS).
+3. Use the supplicants tab in FreeRADIUS panel to define the MAC
+   address and credentials (i.e., username and password) final users
+   must set in their devices (e.g., wireless stations) to access the
+   network. See `/etc/raddb/authorized_macs` and `/etc/raddb/users`
+   files.
 
-3. Use NethServer DHCP module to reserve IP addresses and so, define
-   what MAC will be authorized to access the network as well (i.e.,
-   only the MAC address that has been reserved in NethServer DHCP
-   module will have authorized network access by the authorization
-   server). See `/etc/raddb/authorized_macs` file.
+In addition to these basic steps, the system administrator might also
+do the following:
+
+1. Configure authenticator devices (e.g., access points, smart
+   switches) as authenticator of the authentication server (i.e., to
+   accept authentication requests from supplicants and request access
+   to the centralized authentication server based on them).
+
+2. Configure supplicant devices (e.g., wireless stations) to send
+   authentication requests to authenticator devices.
+
+3. Communicate final users (e.g., using a sealed letter) the
+   credentials they must use in order to access the network.
+
+Use Case
+--------
+
+This package might be useful for system administrators needing to
+control the network access of its users as well as provide mobility to
+them.  For example, consider local wireless communities made of
+NanoStation devices in which one line of these devices is configured
+as access points and the rest of them as client stations. The access
+points, here, are configured as authenticators of a central
+authentication server (running nethserver-freeradius).  The client
+stations (supplicants) are configured to send access requests to the
+authenticators using IEEE802.1X.
+
+In this infrastructure:
+
+1. The supplicant sends an Access-Request to the authenticator it
+   connects to, using IEEE802.1X (e.g., EAP-MD5 or EAP-TTLS). The
+   Access-Request includes the supplicant's MAC address as well as
+   the "User-Name" and "User-Password" attributes.
+
+2. The authenticator sends the Access-Request to the centralized
+   authentication server.
+   
+3. The authentication server decides whether or not to accept the
+   supplicant Access-Request and responds to the authenticator
+   accordingly.
+   
+4. The authenticator enforces the authentication server decision to
+   supplicant.
 
 Bugs
 ----
 
-This module is in a very raw stage and might sure have issues. One of
-them is that MAC-based authorization doesn't provide too much security
-by its own (e.g., unauthorized users can clone the MAC address of
-authorized users and get network access as such). However, by doing
-so, the module provides a start-base code (and, hopefully, some
-motivation) for NethServer community to look forward sophisticated
-FreeRADIUS integration features like EAP authentication and
-accounting.
-
-Please report your issues at
-https://github.com/areguera/nethserver-freeradius/issues
+* https://github.com/areguera/nethserver-freeradius/issues
 
 Author
 ------
@@ -92,3 +104,5 @@ References
 ----------
 
 * http://freeradius.org/
+* http://networkradius.com/doc/FreeRADIUS-Technical-Guide.pdf
+* https://wiki.freeradius.org/guide/Mac-Auth
