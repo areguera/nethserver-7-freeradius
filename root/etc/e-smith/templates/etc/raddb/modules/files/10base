@@ -21,18 +21,29 @@ files \{
 	compat = no
 \}
 
+{
+my $PolicyMAC = $radiusd{'PolicyMAC'};
+
+if ( $PolicyMAC eq "yes" ) {
+
+    $OUT .= <<"HERE";
 files authorized_macs \{
-    # The default key attribute to use for matches.  The content of this
-    # attribute is used to match the "name" of the entry.
+    # The default key attribute to use for matches.  The content
+    # of this attribute is used to match the "name" of the
+    # entry.
     key = "%\{Calling-Station-ID\}"
 
-    usersfile = $\{confdir\}/authorized_macs
+    usersfile = \$\{confdir\}/authorized_macs
 
-    # If you want to use the old Cistron 'users' file with FreeRADIUS, you
-    # should change the next line to 'compat = cistron'.  You can the copy your
-    # 'users' file from Cistron.
+    # If you want to use the old Cistron 'users' file
+    # with FreeRADIUS, you should change the next line
+    # to 'compat = cistron'.  You can the copy your 'users'
+    # file from Cistron.
     compat = no
-    \}
+\}
+HERE
+}
+}
 
 #  An example which defines a second instance of the "files" module.
 #  This instance is named "second_files".  In order for it to be used
