@@ -218,9 +218,10 @@ DEFAULT	Hint == "SLIP"
 #########################################################
 
 {
-use esmith::DB::db;
+use esmith::ConfigDB;
 my $filename = 'radiusd';
-my $db = esmith::DB::db->open($filename) or die esmith::DB->error;
+my $db = esmith::ConfigDB->open($filename) or esmith::ConfigDB->create($filename) or die esmith::DB->error;
+
 
 our %supplicantsmap;
 

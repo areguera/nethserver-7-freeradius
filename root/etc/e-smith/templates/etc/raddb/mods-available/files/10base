@@ -47,7 +47,7 @@ files authorized_macs \{
         # with FreeRADIUS, you should change the next line
         # to 'compat = cistron'.  You can the copy your 'users'
         # file from Cistron.
-        compat = no
+        # compat = no     ##### block the system to start
         \}
 HERE
 }
